@@ -84,7 +84,6 @@ def input_query():
 
     iq.commit()
     iq.close()
-#req 3
 
 #req 4
 # search value
@@ -111,6 +110,45 @@ def search(listbox):
     
     iq.commit()
     iq.close()
+#req 5
+# search value
+def days_find():
+    start_date = start_date_entry.get()
+    end_date = end_date_entry.get()         
+
+    iq = sqlite3.connect('proj2part3/modified.db')
+    
+    iq_cur = iq.cursor()
+    iq_cur.execute('''SELECT BI.Card_No, Days_Late_Return FROM BOOK_LOANS BL, vBOOKLoanInfo BI 
+                    WHERE BL.Card_No=BI.Card_No AND BL.Due_date=BI.Due_date 
+                    AND BI.Due_date >= DATE(?) AND BI.Due_date <= DATE(?) AND Late = 1''',
+            (start_date,end_date,))
+    records = iq_cur.fetchall()
+
+    print_days = ''
+
+    for day in records:
+        print_days += str(str(day[0])+ "\t   " + str(int(day[1])) + "\n")
+    days_label = tk.Label(tab5, text = print_days)
+    days_label.grid(row = 1, column = 1, pady = 20, sticky = 'nw')
+
+    
+    iq.commit()
+    iq.close()
+
+#print book_list
+def late_list():
+    late_conn = sqlite3.connect('proj2part3/modified.db')
+    
+    late_cur = late_conn.cursor()
+    late_cur.execute("SELECT Due_date FROM BOOK_LOANS WHERE Late = 1 ORDER BY Due_date ASC")
+    output_books = late_cur.fetchall()
+
+    latebox = tk.Listbox(tab5)
+    latebox.grid(row = 1, padx = 100, ipady = 30, ipadx = 30, sticky='nsew')
+    
+    for output_record in output_books:	
+        latebox.insert(tk.END, output_record[0]) 
 
 #print book_list
 def book_list():
@@ -417,7 +455,36 @@ searches_button.grid(row = 2, column = 0, pady = 10, sticky = 'e')
 
 
 tab5_label = tk.Label(tab5, text = "Requirement 5")
-tab5_label.pack()
+#define all the texboxes
+start_date_entry = tk.Entry(tab5, width = 10)
+start_date_entry.grid(row = 3, column = 0)
+
+end_date_entry = tk.Entry(tab5, width = 10)
+end_date_entry.grid(row = 6, column = 0)
+
+
+#label
+date_list = tk.Label(tab5, text = "Due_dates_late")
+date_list.grid(row = 0,column = 0)
+late_list()
+
+start_label = tk.Label(tab5, text = "Start_dates (yyyy-mm-dd)")
+start_label.grid(row = 2,column = 0)
+to_label = tk.Label(tab5, text = "to")
+to_label.grid(row = 4,column = 0, pady= 5)
+end_label = tk.Label(tab5, text = "End_dates (yyyy-mm-dd)")
+end_label.grid(row = 5,column= 0,padx=10)
+
+output_label = tk.Label(tab5, text = "Result")
+output_label.grid(row = 0, column=1)
+
+date_label = tk.Label(tab5, text = "Card_No" + "   " + "Days_of_late")
+date_label.grid(row = 1,column=1,  sticky='n')
+
+
+#find button
+Find_button = tk.Button(tab5, text = 'Find', command = days_find)
+Find_button.grid(row = 7, column = 0, pady = 10)
 
 # -----------------------------------------------------------------------------------------
 
