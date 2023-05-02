@@ -9,7 +9,7 @@ def switch_to_tab(tab_index):
     notebook.select(tab_index)
 
 def display_book_copies():
-    with sqlite3.connect('proj2part3/modified.db') as conn:
+    with sqlite3.connect('proj2part3/LMS.db') as conn:
         cur = conn.cursor()
         cur.execute("SELECT * FROM BOOK_COPIES")
         book_copies = cur.fetchall()
@@ -25,7 +25,7 @@ def display_book_copies():
 def submit1():
     print("user checked out " + enter_textbox.get() + "\n")
 
-    submit_conn = sqlite3.connect('proj2part3/modified.db')
+    submit_conn = sqlite3.connect('proj2part3/LMS.db')
     submit_cur = submit_conn.cursor()
 
     # getting Book id from input title
@@ -58,7 +58,7 @@ def submit1():
     card_no_textbox.delete(0, tk.END)
 #req2
 def submit2():
-    submit_conn = sqlite3.connect('proj2part3/modified.db')
+    submit_conn = sqlite3.connect('proj2part3/LMS.db')
     
     submit_cur = submit_conn.cursor()
     submit_cur.execute("INSERT INTO BORROWER (Name, Address, Phone) VALUES (:Name, :Address, :Phone)",
@@ -71,7 +71,7 @@ def submit2():
     submit_conn.close()
 def input_query():
 
-    iq = sqlite3.connect('proj2part3/modified.db')
+    iq = sqlite3.connect('proj2part3/LMS.db')
     
     iq_cur = iq.cursor()
     iq_cur.execute("Select Card_No FROM BORROWER WHERE Name = ? AND Address = ? AND Phone = ?",
@@ -91,7 +91,7 @@ def search(listbox):
     
     selection = listbox.get(listbox.curselection())
 
-    iq = sqlite3.connect('proj2part3/modified.db')
+    iq = sqlite3.connect('proj2part3/LMS.db')
     
     iq_cur = iq.cursor()
     iq_cur.execute('''SELECT (SELECT Branch_name FROM LIBRARY_BRANCH LB WHERE BL.Branch_ID = LB.Branch_ID)
@@ -116,7 +116,7 @@ def days_find():
     start_date = start_date_entry.get()
     end_date = end_date_entry.get()         
 
-    iq = sqlite3.connect('proj2part3/modified.db')
+    iq = sqlite3.connect('proj2part3/LMS.db')
     
     iq_cur = iq.cursor()
     iq_cur.execute('''SELECT BI.Card_No, Days_Late_Return FROM BOOK_LOANS BL, vBOOKLoanInfo BI 
@@ -138,7 +138,7 @@ def days_find():
 
 #print book_list
 def late_list():
-    late_conn = sqlite3.connect('proj2part3/modified.db')
+    late_conn = sqlite3.connect('proj2part3/LMS.db')
     
     late_cur = late_conn.cursor()
     late_cur.execute("SELECT Due_date FROM BOOK_LOANS WHERE Late = 1 ORDER BY Due_date ASC")
@@ -152,7 +152,7 @@ def late_list():
 
 #print book_list
 def book_list():
-    book_conn = sqlite3.connect('proj2part3/modified.db')
+    book_conn = sqlite3.connect('proj2part3/LMS.db')
     
     book_cur = book_conn.cursor()
     book_cur.execute("SELECT DISTINCT Title FROM BOOK")
@@ -181,7 +181,7 @@ def submit6a():
         query = "SELECT Card_No, Borrower_Name, LateFeeBalance FROM vBookLoanInfo ORDER BY LateFeeBalance DESC"
         param = None
     
-    with sqlite3.connect('proj2part3/modified.db') as conn:
+    with sqlite3.connect('proj2part3/LMS.db') as conn:
         cur = conn.cursor()
         if param:
             cur.execute(query, param)
@@ -274,7 +274,7 @@ notebook.pack(fill = "both", expand = "yes")
 # -----------------------------------------------------------------------------------------
 tab1_label = tk.Label(tab1, text = "Check Out a Book", font=("Arial", 16, "bold"))
 tab1_label.pack(pady = 15)
-book_conn = sqlite3.connect('proj2part3/modified.db')
+book_conn = sqlite3.connect('proj2part3/LMS.db')
 book_cur = book_conn.cursor()
 
 book_cur.execute("SELECT Title FROM BOOK")
@@ -366,7 +366,7 @@ iq_button.grid(row = 7, column = 0, columnspan = 2, pady = 10, padx = 10, ipadx 
 tab3_label = tk.Label(tab3, text = "Add New Book", font=("Arial", 16, "bold"))
 tab3_label.pack(pady=15)
 
-conn = sqlite3.connect('proj2part3/modified.db')
+conn = sqlite3.connect('proj2part3/LMS.db')
 c = conn.cursor()
 
 # create labels and text boxes
