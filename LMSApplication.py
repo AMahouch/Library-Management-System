@@ -344,7 +344,7 @@ Phone = tk.Entry(tab2, width = 30)
 Phone.grid(row = 3, column = 1)
 
 #label
-new_label = tk.Label(tab2, text = "New Borrower", font = ("aerial", 16, "bold"))
+new_label = tk.Label(tab2, text = "Add a New Borrower", font = ("aerial", 16, "bold"))
 new_label.grid(row = 0, columnspan = 2, pady = 10)
 
 Name_label = tk.Label(tab2, text = 'Name: ')
@@ -454,7 +454,8 @@ searches_button.grid(row = 2, column = 0, pady = 10, sticky = 'e')
 # -----------------------------------------------------------------------------------------
 
 
-tab5_label = tk.Label(tab5, text = "Requirement 5")
+# tab5_label = tk.Label(tab5, text = "Late Day Search", font = ("Aerial", "14", "bold"))
+# tab5_label.grid(row = 0, column = 0)
 #define all the texboxes
 start_date_entry = tk.Entry(tab5, width = 10)
 start_date_entry.grid(row = 3, column = 0)
